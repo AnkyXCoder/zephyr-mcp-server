@@ -1,0 +1,32 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "zephyr-ai-platform"
+version = "1.0.0"
+description = "Production Grade Embedded AI Platform for Zephyr RTOS"
+authors = [{ name = "Your Name" }]
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "mcp",
+    "pyyaml",
+    "networkx",
+    "flask",
+    "typer",
+    "rich"
+]
+
+[project.scripts]
+zephyr-ai = "zephyr_ai.cli:cli"
+zephyr-ai-mcp = "zephyr_ai.core.server:main"
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.packages.find]
+where = ["."]
+
+[tool.setuptools.package-data]
+zephyr_ai = ["dashboard/templates/*.html"]
