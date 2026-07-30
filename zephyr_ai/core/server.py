@@ -19,6 +19,15 @@ from zephyr_ai.tools.build_tools import (
     debugserver_stop,
     flash,
 )
+from zephyr_ai.tools.device_console_tools import (
+    rtt_log_start,
+    rtt_log_status,
+    rtt_log_stop,
+    serial_log_start,
+    serial_log_status,
+    serial_log_stop,
+    serial_send_command,
+)
 from zephyr_ai.tools.devicetree_tools import parse_devicetree
 from zephyr_ai.tools.kconfig_tools import search_kconfig_symbol
 from zephyr_ai.tools.twister_tools import run_twister
@@ -67,6 +76,15 @@ def create_server():
     mcp.tool()(debugserver_status)
     mcp.tool()(debugserver_stop)
     mcp.tool()(build_flash_debug)
+
+    # Device console
+    mcp.tool()(serial_log_start)
+    mcp.tool()(serial_log_status)
+    mcp.tool()(serial_log_stop)
+    mcp.tool()(serial_send_command)
+    mcp.tool()(rtt_log_start)
+    mcp.tool()(rtt_log_status)
+    mcp.tool()(rtt_log_stop)
 
     # Build introspection
     mcp.tool()(get_build_info)

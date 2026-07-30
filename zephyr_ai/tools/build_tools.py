@@ -72,7 +72,7 @@ async def build(
             cmd.append("--")
             cmd.extend(extra_cmake_args)
 
-        env = make_zephyr_env(zephyr_base=str(ws.zephyr_base))
+        env = make_zephyr_env(zephyr_base=str(ws.zephyr_base), workspace_root=str(ws.root))
         res = await run_async(cmd, cwd=str(ws.root), env=env, timeout_s=timeout_s)
         return _ok({"workspace": ws.as_dict(), "build_dir": str(out_dir), "result": res.as_dict()})
     except ValueError as e:
@@ -98,7 +98,7 @@ async def flash(
         if extra_args:
             cmd.append("--")
             cmd.extend(extra_args)
-        env = make_zephyr_env(zephyr_base=str(ws.zephyr_base))
+        env = make_zephyr_env(zephyr_base=str(ws.zephyr_base), workspace_root=str(ws.root))
         res = await run_async(cmd, cwd=str(ws.root), env=env, timeout_s=timeout_s)
         return _ok({"workspace": ws.as_dict(), "build_dir": str(bdir), "result": res.as_dict()})
     except ValueError as e:
@@ -177,7 +177,7 @@ async def debugserver_start(
             argv.append("--")
             argv.extend(extra_args)
 
-        env = make_zephyr_env(zephyr_base=str(ws.zephyr_base))
+        env = make_zephyr_env(zephyr_base=str(ws.zephyr_base), workspace_root=str(ws.root))
         proc = await asyncio.create_subprocess_exec(
             *argv,
             stdout=asyncio.subprocess.PIPE,

@@ -64,7 +64,7 @@ async def parse_west_manifest(workspace_root: Optional[str] = None, start_path: 
     """
     try:
         ws = resolve_workspace(workspace_root=workspace_root, start_path=start_path)
-        env = make_zephyr_env(zephyr_base=str(ws.zephyr_base))
+        env = make_zephyr_env(zephyr_base=str(ws.zephyr_base), workspace_root=str(ws.root))
         res = await run_async(["west", "manifest", "--resolve"], cwd=str(ws.root), env=env, timeout_s=60)
         data: Dict[str, Any] = {"command": res.as_dict(), "manifest": None, "raw": None}
         if res.returncode != 0:
@@ -85,7 +85,7 @@ async def list_modules(workspace_root: Optional[str] = None, start_path: Optiona
     """
     try:
         ws = resolve_workspace(workspace_root=workspace_root, start_path=start_path)
-        env = make_zephyr_env(zephyr_base=str(ws.zephyr_base))
+        env = make_zephyr_env(zephyr_base=str(ws.zephyr_base), workspace_root=str(ws.root))
         res = await run_async(["west", "manifest", "--resolve"], cwd=str(ws.root), env=env, timeout_s=60)
         if res.returncode != 0:
             return _err("west manifest failed", hint=res.stderr or res.stdout, type_="CommandError")
@@ -117,7 +117,7 @@ async def analyze_west_workspace(workspace_root: Optional[str] = None, start_pat
     """
     try:
         ws = resolve_workspace(workspace_root=workspace_root, start_path=start_path)
-        env = make_zephyr_env(zephyr_base=str(ws.zephyr_base))
+        env = make_zephyr_env(zephyr_base=str(ws.zephyr_base), workspace_root=str(ws.root))
         res = await run_async(["west", "manifest", "--resolve"], cwd=str(ws.root), env=env, timeout_s=60)
         if res.returncode != 0:
             return _err("west manifest failed", hint=res.stderr or res.stdout, type_="CommandError")

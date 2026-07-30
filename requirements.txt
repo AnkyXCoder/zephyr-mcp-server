@@ -3,3 +3,4 @@ pyyaml
 lxml
 rich
 networkx
+pyserial

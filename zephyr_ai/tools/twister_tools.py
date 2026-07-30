@@ -38,7 +38,7 @@ async def run_twister(
     """
     try:
         ws = resolve_workspace(workspace_root=workspace_root, start_path=start_path or testsuite_root)
-        env = make_zephyr_env(zephyr_base=str(ws.zephyr_base))
+        env = make_zephyr_env(zephyr_base=str(ws.zephyr_base), workspace_root=str(ws.root))
 
         argv: List[str] = ["west", "twister"]
         if testsuite_root:

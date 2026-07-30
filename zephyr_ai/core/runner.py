@@ -38,8 +38,8 @@ class CommandResult:
         }
 
 
-def make_zephyr_env(*, zephyr_base: Optional[str] = None, extra: Optional[Dict[str, str]] = None) -> Dict[str, str]:
-    env = build_subprocess_env()
+def make_zephyr_env(*, zephyr_base: Optional[str] = None, workspace_root: Optional[str] = None, extra: Optional[Dict[str, str]] = None) -> Dict[str, str]:
+    env = build_subprocess_env(workspace_root=workspace_root)
     if zephyr_base:
         env["ZEPHYR_BASE"] = zephyr_base
     if extra:
