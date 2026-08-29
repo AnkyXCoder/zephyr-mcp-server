@@ -9,14 +9,7 @@ description = "Production Grade Embedded AI Platform for Zephyr RTOS"
 authors = [{ name = "Your Name" }]
 readme = "README.md"
 requires-python = ">=3.10"
-dependencies = [
-    "mcp",
-    "pyyaml",
-    "networkx",
-    "flask",
-    "typer",
-    "rich"
-]
+dependencies = ["mcp<2", "pyyaml", "networkx", "flask", "typer", "rich"]
 
 [project.scripts]
 zephyr-ai = "zephyr_ai.cli:cli"
