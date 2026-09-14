@@ -12,23 +12,23 @@ The `zephyr_ai` server (`~/zephyr_mcp/zephyr_ai/core/server.py`) registers 28 to
 
 **Shell-out wrappers.** The tool builds an argv, runs it as a subprocess, and returns stdout/stderr/returncode:
 
-| Module | Command it actually runs |
-|---|---|
-| `tools/build_tools.py` | `west build -b <board> -d <dir> <app> [--pristine]`, `west flash -d <dir> [-r <runner>]`, `west debugserver -d <dir>` |
-| `tools/workspace_tools.py` | `west manifest --resolve` |
-| `tools/twister_tools.py` | `west twister -T <root> -p <platform> -o <reportdir>` |
-| `analysis/cppcheck.py` | `cppcheck --enable=all <path>` |
-| `tools/device_console_tools.py` | pyserial `Serial(port, baud)` reads/writes; `JLinkRTTLogger -Device … -If … -Speed … -RTTChannel … <log>` |
+| Module                          | Command it actually runs                                                                                              |
+| ------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
+| `tools/build_tools.py`          | `west build -b <board> -d <dir> <app> [--pristine]`, `west flash -d <dir> [-r <runner>]`, `west debugserver -d <dir>` |
+| `tools/workspace_tools.py`      | `west manifest --resolve`                                                                                             |
+| `tools/twister_tools.py`        | `west twister -T <root> -p <platform> -o <reportdir>`                                                                 |
+| `analysis/cppcheck.py`          | `cppcheck --enable=all <path>`                                                                                        |
+| `tools/device_console_tools.py` | pyserial `Serial(port, baud)` reads/writes; `JLinkRTTLogger -Device … -If … -Speed … -RTTChannel … <log>`             |
 
 **Local file parsers.** The tool reads files off disk and reshapes them:
 
-| Module | What it reads |
-|---|---|
-| `tools/kconfig_tools.py` | walks `ZEPHYR_BASE`, greps files named `Kconfig*` for a symbol |
-| `tools/boards_tools.py` | globs `boards/*/*/board.yml` and `boards/shields/*/*/shield.yml`, reads YAML |
+| Module                      | What it reads                                                                                   |
+| --------------------------- | ----------------------------------------------------------------------------------------------- |
+| `tools/kconfig_tools.py`    | walks `ZEPHYR_BASE`, greps files named `Kconfig*` for a symbol                                  |
+| `tools/boards_tools.py`     | globs `boards/*/*/board.yml` and `boards/shields/*/*/shield.yml`, reads YAML                    |
 | `tools/devicetree_tools.py` | reads `<build>/zephyr/zephyr.dts` (lines containing `status = "okay"`), optionally `edt.pickle` |
-| `tools/build_info_tools.py` | `stat`s `CMakeCache.txt`, `.config`, `zephyr.elf/hex/bin/dts`, `runners.yaml` |
-| `firmware/mcuboot.py` | reads 32 header bytes, `struct.unpack` of the magic |
+| `tools/build_info_tools.py` | `stat`s `CMakeCache.txt`, `.config`, `zephyr.elf/hex/bin/dts`, `runners.yaml`                   |
+| `firmware/mcuboot.py`       | reads 32 header bytes, `struct.unpack` of the magic                                             |
 
 Now look at what an MCP tool definition actually is:
 
@@ -126,63 +126,63 @@ The rule that makes this trustworthy: **the skill may not state anything it cann
 
 All 28 registered tools, accounted for:
 
-| # | MCP tool | Underlying operation | Replacement |
-|---|---|---|---|
-| 1 | `debug_env` | read `sys.executable`, `ZEPHYR_BASE` | none needed — `exec: env \| grep ZEPHYR_BASE` |
-| 2 | `detect_west_workspaces` | find `.west/` dirs | **`west-workspace-inspector`** |
-| 3 | `analyze_workspace` | resolve root/zephyr_base | **`west-workspace-inspector`** |
-| 4 | `analyze_west_workspace` | resolve + manifest project count | **`west-workspace-inspector`** |
-| 5 | `get_zephyr_version` | read `<zephyr>/VERSION` | **`west-workspace-inspector`** |
-| 6 | `parse_west_manifest` | `west manifest --resolve` + YAML | **`west-workspace-inspector`** |
-| 7 | `list_modules` | manifest `projects[]` | **`west-workspace-inspector`** |
-| 8 | `list_boards` | glob `board.yml` / `shield.yml` | **`west-workspace-inspector`** |
-| 9 | `build` | `west build -b … -d … [--pristine]` | **`west-build-flash`** |
-| 10 | `flash` | `west flash -d … [-r …]` | **`west-build-flash`** |
-| 11 | `build_flash` | build then flash | **`west-build-flash`** |
-| 12 | `debugserver_start` | bg `west debugserver -d …` | **`west-build-flash`** (background shell) |
-| 13 | `debugserver_status` | poll session log | **`west-build-flash`** (`get_output`) |
-| 14 | `debugserver_stop` | terminate session | **`west-build-flash`** (kill shell) |
-| 15 | `build_flash_debug` | the three chained | **`west-build-flash`** |
-| 16 | `get_build_info` | stat build artifacts | **`west-build-flash`** (`build-info` action) |
-| 17 | `serial_log_start` | pyserial reader thread | **`device-console-bridge`** |
-| 18 | `serial_log_status` | read session buffer | **`device-console-bridge`** |
-| 19 | `serial_send_command` | write to serial | **`device-console-bridge`** (stdin write) |
-| 20 | `serial_log_stop` | close port | **`device-console-bridge`** |
-| 21 | `rtt_log_start` | bg `JLinkRTTLogger …` | **`device-console-bridge`** |
-| 22 | `rtt_log_status` | poll process + log size | **`device-console-bridge`** |
-| 23 | `rtt_log_stop` | terminate process | **`device-console-bridge`** |
-| 24 | `search_kconfig_symbol` | grep `Kconfig*` | existing **`kconfig-tuner`** (its search/verify step) |
-| 25 | `parse_devicetree` | read `zephyr.dts` / `edt.pickle` | **`devicetree-inspector`** |
-| 26 | `run_twister` | `west twister … -o <dir>` + JSON | **`twister-runner`** |
-| 27 | `run_cppcheck` | `cppcheck --enable=all <path>` | **`static-analysis-runner`** |
-| 28 | `analyze_image` | MCUboot header unpack | **`mcuboot-image-inspector`** |
+| #   | MCP tool                 | Underlying operation                 | Replacement                                           |
+| --- | ------------------------ | ------------------------------------ | ----------------------------------------------------- |
+| 1   | `debug_env`              | read `sys.executable`, `ZEPHYR_BASE` | none needed — `exec: env \| grep ZEPHYR_BASE`         |
+| 2   | `detect_west_workspaces` | find `.west/` dirs                   | **`west-workspace-inspector`**                        |
+| 3   | `analyze_workspace`      | resolve root/zephyr_base             | **`west-workspace-inspector`**                        |
+| 4   | `analyze_west_workspace` | resolve + manifest project count     | **`west-workspace-inspector`**                        |
+| 5   | `get_zephyr_version`     | read `<zephyr>/VERSION`              | **`west-workspace-inspector`**                        |
+| 6   | `parse_west_manifest`    | `west manifest --resolve` + YAML     | **`west-workspace-inspector`**                        |
+| 7   | `list_modules`           | manifest `projects[]`                | **`west-workspace-inspector`**                        |
+| 8   | `list_boards`            | glob `board.yml` / `shield.yml`      | **`west-workspace-inspector`**                        |
+| 9   | `build`                  | `west build -b … -d … [--pristine]`  | **`west-build-flash`**                                |
+| 10  | `flash`                  | `west flash -d … [-r …]`             | **`west-build-flash`**                                |
+| 11  | `build_flash`            | build then flash                     | **`west-build-flash`**                                |
+| 12  | `debugserver_start`      | bg `west debugserver -d …`           | **`west-build-flash`** (background shell)             |
+| 13  | `debugserver_status`     | poll session log                     | **`west-build-flash`** (`get_output`)                 |
+| 14  | `debugserver_stop`       | terminate session                    | **`west-build-flash`** (kill shell)                   |
+| 15  | `build_flash_debug`      | the three chained                    | **`west-build-flash`**                                |
+| 16  | `get_build_info`         | stat build artifacts                 | **`west-build-flash`** (`build-info` action)          |
+| 17  | `serial_log_start`       | pyserial reader thread               | **`device-console-bridge`**                           |
+| 18  | `serial_log_status`      | read session buffer                  | **`device-console-bridge`**                           |
+| 19  | `serial_send_command`    | write to serial                      | **`device-console-bridge`** (stdin write)             |
+| 20  | `serial_log_stop`        | close port                           | **`device-console-bridge`**                           |
+| 21  | `rtt_log_start`          | bg `JLinkRTTLogger …`                | **`device-console-bridge`**                           |
+| 22  | `rtt_log_status`         | poll process + log size              | **`device-console-bridge`**                           |
+| 23  | `rtt_log_stop`           | terminate process                    | **`device-console-bridge`**                           |
+| 24  | `search_kconfig_symbol`  | grep `Kconfig*`                      | existing **`kconfig-tuner`** (its search/verify step) |
+| 25  | `parse_devicetree`       | read `zephyr.dts` / `edt.pickle`     | **`devicetree-inspector`**                            |
+| 26  | `run_twister`            | `west twister … -o <dir>` + JSON     | **`twister-runner`**                                  |
+| 27  | `run_cppcheck`           | `cppcheck --enable=all <path>`       | **`static-analysis-runner`**                          |
+| 28  | `analyze_image`          | MCUboot header unpack                | **`mcuboot-image-inspector`**                         |
 
 (Verify the count yourself: `grep -c 'mcp\.tool()' zephyr_ai/core/server.py` → 28.)
 
-### The resulting skill set in `.devin/skills/`
+### The resulting skill set in `skills/`
 
 Pre-existing (unchanged by this migration):
 
-| Skill | Role |
-|---|---|
-| `kconfig-tuner` | English goal → verified minimal `CONFIG_*` diff; subsumes Kconfig symbol search |
-| `devicetree-author` | Author/modify `.dts` / `.overlay` with binding citations |
-| `zephyr-bsp-scaffold` | Mirror a reference BSP into a new board |
-| `build-doctor` | Classify a failed `west build` into one of five categories |
-| `renode-runner` | Run an ELF in Renode, assert on UART output |
-| `embedded-skill-author` | Meta-skill: author new skills + determinism harness |
+| Skill                   | Role                                                                            |
+| ----------------------- | ------------------------------------------------------------------------------- |
+| `kconfig-tuner`         | English goal → verified minimal `CONFIG_*` diff; subsumes Kconfig symbol search |
+| `devicetree-author`     | Author/modify `.dts` / `.overlay` with binding citations                        |
+| `zephyr-bsp-scaffold`   | Mirror a reference BSP into a new board                                         |
+| `build-doctor`          | Classify a failed `west build` into one of five categories                      |
+| `renode-runner`         | Run an ELF in Renode, assert on UART output                                     |
+| `embedded-skill-author` | Meta-skill: author new skills + determinism harness                             |
 
 Added by this migration:
 
-| Skill | Replaces |
-|---|---|
-| `west-workspace-inspector` | tools 2–8 |
-| `west-build-flash` | tools 9–16 |
-| `device-console-bridge` | tools 17–23 |
-| `devicetree-inspector` | tool 25 |
-| `twister-runner` | tool 26 |
-| `static-analysis-runner` | tool 27 |
-| `mcuboot-image-inspector` | tool 28 |
+| Skill                      | Replaces    |
+| -------------------------- | ----------- |
+| `west-workspace-inspector` | tools 2–8   |
+| `west-build-flash`         | tools 9–16  |
+| `device-console-bridge`    | tools 17–23 |
+| `devicetree-inspector`     | tool 25     |
+| `twister-runner`           | tool 26     |
+| `static-analysis-runner`   | tool 27     |
+| `mcuboot-image-inspector`  | tool 28     |
 
 Routing between them is enforced by each skill's **When NOT to use** section, e.g. `west-build-flash` explicitly refuses to classify build errors and hands the captured stderr to `build-doctor`; `devicetree-inspector` refuses to edit and hands off to `devicetree-author`.
 
@@ -204,14 +204,14 @@ Server-side, `zephyr_ai` keeps a module-level dict (`_rtt_sessions`, `_serial_se
 
 **The CLI equivalent.** The agent's shell tooling already provides all three pieces:
 
-| MCP concept | CLI equivalent |
-|---|---|
-| `session_id` | the background shell id returned by `exec` |
-| background drain into a `deque` | the shell's own captured output buffer + `tee` to a log file |
-| `*_status(session_id)` | `get_output(shell_id, incremental=true)` — returns only what's new since your last read |
-| `*_send_command(session_id, cmd)` | write to the running shell's stdin |
-| `*_stop(session_id)` | kill the background shell |
-| `recent_log` ring buffer | `tail -n <N> <log_path>` |
+| MCP concept                       | CLI equivalent                                                                          |
+| --------------------------------- | --------------------------------------------------------------------------------------- |
+| `session_id`                      | the background shell id returned by `exec`                                              |
+| background drain into a `deque`   | the shell's own captured output buffer + `tee` to a log file                            |
+| `*_status(session_id)`            | `get_output(shell_id, incremental=true)` — returns only what's new since your last read |
+| `*_send_command(session_id, cmd)` | write to the running shell's stdin                                                      |
+| `*_stop(session_id)`              | kill the background shell                                                               |
+| `recent_log` ring buffer          | `tail -n <N> <log_path>`                                                                |
 
 **Worked snippet — serial capture as a background shell:**
 
@@ -255,12 +255,12 @@ idf.py -p <port> monitor                     # long-running
 
 **Step 2 — parsing and validation.**
 
-| Operation | What proves it worked |
-|---|---|
+| Operation     | What proves it worked                                                                                                                                           |
+| ------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `write_flash` | exit code 0 **and** the literal string `Hash of data verified.` in stdout. Exit code alone is insufficient — a partial write can still exit 0 on some versions. |
-| `read_mac` | regex `MAC: ([0-9a-f]{2}:){5}[0-9a-f]{2}` — report the captured MAC, never a placeholder |
-| `flash_id` | `Detected flash size: (\d+MB)` |
-| `monitor` | nothing to assert synchronously — it's a stream |
+| `read_mac`    | regex `MAC: ([0-9a-f]{2}:){5}[0-9a-f]{2}` — report the captured MAC, never a placeholder                                                                        |
+| `flash_id`    | `Detected flash size: (\d+MB)`                                                                                                                                  |
+| `monitor`     | nothing to assert synchronously — it's a stream                                                                                                                 |
 
 **Step 3 — statefulness.** `write_flash`, `read_mac`, `flash_id` are one-shot. `idf.py monitor` is a session → background shell, identical in shape to `device-console-bridge` (its exit sequence is `Ctrl+]`, which the skill should document as the graceful stop before falling back to killing the shell).
 
@@ -287,13 +287,13 @@ description: Use when the user asks to flash, erase, or identify an ESP32-family
   different skill.
 
 ## Required inputs
-| Input | Type | Default |
-|-------|------|---------|
-| action | flash \| read-mac \| flash-id \| erase \| monitor | (ask) |
-| chip   | esp32 \| esp32s3 \| esp32c3 \| ...            | auto: `esptool.py --port <p> chip_id` |
-| port   | serial device                                  | auto if exactly one /dev/ttyUSB* |
-| bin_path, addr | file + flash offset                    | (ask for flash) |
-| baud   | int                                            | 460800 |
+| Input          | Type                                              | Default                               |
+| -------------- | ------------------------------------------------- | ------------------------------------- |
+| action         | flash \| read-mac \| flash-id \| erase \| monitor | (ask)                                 |
+| chip           | esp32 \| esp32s3 \| esp32c3 \| ...                | auto: `esptool.py --port <p> chip_id` |
+| port           | serial device                                     | auto if exactly one /dev/ttyUSB*      |
+| bin_path, addr | file + flash offset                               | (ask for flash)                       |
+| baud           | int                                               | 460800                                |
 
 ## Procedure
 1. Verify `which esptool.py`; verify `test -e <port>` and readability.
@@ -304,13 +304,13 @@ description: Use when the user asks to flash, erase, or identify an ESP32-family
 5. For monitor: background the shell, report the shell id as the session.
 
 ## Self-Validation Protocol
-| # | Check | How to verify |
-|---|-------|---------------|
-| 1 | esptool present | `which esptool.py` |
-| 2 | port exists + readable | `test -r <port>` |
-| 3 | exit code captured | literal integer |
-| 4 | flash verified | grep -q "Hash of data verified." in stdout |
-| 5 | MAC/flash-id came from stdout | the regex matched; value printed verbatim |
+| #   | Check                         | How to verify                              |
+| --- | ----------------------------- | ------------------------------------------ |
+| 1   | esptool present               | `which esptool.py`                         |
+| 2   | port exists + readable        | `test -r <port>`                           |
+| 3   | exit code captured            | literal integer                            |
+| 4   | flash verified                | grep -q "Hash of data verified." in stdout |
+| 5   | MAC/flash-id came from stdout | the regex matched; value printed verbatim  |
 
 ## Retry policy
 1 retry on "Failed to connect ... Wrong boot mode detected" after telling
@@ -342,14 +342,14 @@ In every case the conversion is the same three questions: *what argv, what prove
 
 Devin CLI (and equivalently Claude Code / Cursor / Windsurf) offers several extension layers. Choosing the right one matters:
 
-| Layer | What it is | Use it for |
-|---|---|---|
-| **Rules** (`AGENTS.md`, `.devin/rules/`) | Always-on context injected every session | Project-wide standards: coding style, "always build with `--pristine`", "never push to main". Cheap but always consuming context. |
-| **Skills** (`.devin/skills/<name>/SKILL.md`) | On-demand procedures the agent invokes when the request matches | **MCP tool replacement.** Loaded only when relevant, so a dozen skills cost nothing until used. |
-| **Subagents** (`.devin/agents/<name>.md`) | Specialized worker profiles with their own prompt/tools | Delegating long, self-contained work (e.g. "audit every driver in this subsystem") without polluting the main context. |
-| **Hooks** (`.devin/hooks.v1.json`) | Shell commands or prompts fired on lifecycle events | Policy enforcement: block `rm -rf` on the build tree, auto-run `checkpatch` after edits, log every flash to a file. |
-| **Plugins** | Git-distributed bundles of the above | Sharing this whole skill set with the team from one repo. Note plugin-declared MCP servers still obey the org's MCP toggle; the skills/rules/hooks parts do not. |
-| **MCP servers** | External tool servers over a protocol | Genuinely remote/stateful services with auth (a hosted API, a database). Not needed for "run a local CLI". |
+| Layer                                     | What it is                                                      | Use it for                                                                                                                                                       |
+| ----------------------------------------- | --------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Rules** (`AGENTS.md`, `.devin/rules/`)  | Always-on context injected every session                        | Project-wide standards: coding style, "always build with `--pristine`", "never push to main". Cheap but always consuming context.                                |
+| **Skills** (`skills/<name>/SKILL.md`)     | On-demand procedures the agent invokes when the request matches | **MCP tool replacement.** Loaded only when relevant, so a dozen skills cost nothing until used.                                                                  |
+| **Subagents** (`.devin/agents/<name>.md`) | Specialized worker profiles with their own prompt/tools         | Delegating long, self-contained work (e.g. "audit every driver in this subsystem") without polluting the main context.                                           |
+| **Hooks** (`.devin/hooks.v1.json`)        | Shell commands or prompts fired on lifecycle events             | Policy enforcement: block `rm -rf` on the build tree, auto-run `checkpatch` after edits, log every flash to a file.                                              |
+| **Plugins**                               | Git-distributed bundles of the above                            | Sharing this whole skill set with the team from one repo. Note plugin-declared MCP servers still obey the org's MCP toggle; the skills/rules/hooks parts do not. |
+| **MCP servers**                           | External tool servers over a protocol                           | Genuinely remote/stateful services with auth (a hosted API, a database). Not needed for "run a local CLI".                                                       |
 
 **Rule of thumb:** if the capability is *"run a local binary and interpret its output"*, it is a **skill**, and MCP was never buying you anything. If it is *"talk to a remote authenticated service that maintains state across sessions"*, MCP is the right tool — and if it is blocked by policy, the fallback is a skill that shells out to that service's own CLI (`gh`, `aws`, `az`, `jira`) or `curl`s its REST API.
 

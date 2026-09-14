@@ -1,6 +1,6 @@
 ---
 name: embedded-skill-author
-description: Use when the user wants to capture a stable, repeatable embedded engineering procedure as a deterministic, self-validating Claude Code skill. Triggers include "make a skill for X", "codify this procedure as a skill", "I want a skill that does Y every time", "turn this checklist into a skill", or any request to build a reusable agent skill around a known-good embedded workflow. Generates a complete `.claude/skills/<name>/SKILL.md` plus a paired multi-run test harness `tests/skills/<name>/runner.sh`. Refuses to author skills for open-ended tasks (debugging novel issues, architecture decisions) where the procedure is not stable.
+description: Use when the user wants to capture a stable, repeatable embedded engineering procedure as a deterministic, self-validating Claude Code skill. Triggers include "make a skill for X", "codify this procedure as a skill", "I want a skill that does Y every time", "turn this checklist into a skill", or any request to build a reusable agent skill around a known-good embedded workflow. Generates a complete `skills/<name>/SKILL.md` plus a paired multi-run test harness `tests/skills/<name>/runner.sh`. Refuses to author skills for open-ended tasks (debugging novel issues, architecture decisions) where the procedure is not stable.
 ---
 
 # embedded-skill-author
@@ -31,7 +31,7 @@ Authors a deterministic, self-validating Claude Code skill for a stable embedded
 | `validation_checks` | 3 to 7 binary checks, each with a literal verification command | (none -- ask) |
 | `output_format` | example output block showing the fixed structure including the validation table | (none -- ask) |
 | `refuse_examples` | 1 to 2 example inputs the skill should explicitly refuse | (none -- ask) |
-| `target_dir` | where to write the skill | `.claude/skills/<skill_name>/` |
+| `target_dir` | where to write the skill | `skills/<skill_name>/` |
 | `harness_dir` | where to write the test harness | `tests/skills/<skill_name>/` |
 
 If any required input is missing, the skill must interview the user one input at a time. Do not synthesize defaults for the procedure-shaped inputs (steps, validation_checks, output_format) -- those are the user's expertise being captured.
@@ -96,7 +96,7 @@ Maximum 1 retry on the last validation pass. After that, surface the partial out
 embedded-skill-author result: PASS  (or FAIL)
 
 Generated:
-  Skill spec:    .claude/skills/<skill_name>/SKILL.md  (XX lines)
+  Skill spec:    skills/<skill_name>/SKILL.md  (XX lines)
   Test harness:  tests/skills/<skill_name>/runner.sh   (executable)
 
 Validation:
@@ -123,7 +123,7 @@ User: "I want a skill that scaffolds a vendor HAL driver from a reference. The r
 Agent:
 1. Confirms the procedure is stable (yes -- the user has done it five times by hand).
 2. Interviews for `skill_name` (`hal-driver-scaffold`), `inputs` (reference path, target chip name, RM section), `steps`, `validation_checks` (file count, chip-identifier rename, register address grep, dtc-clean compile), `output_format`.
-3. Writes `.claude/skills/hal-driver-scaffold/SKILL.md` and `tests/skills/hal-driver-scaffold/runner.sh`.
+3. Writes `skills/hal-driver-scaffold/SKILL.md` and `tests/skills/hal-driver-scaffold/runner.sh`.
 4. Reports PASS with the seven self-validation checks.
 
 ### Example 2: refuse on open-ended task
