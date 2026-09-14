@@ -7,7 +7,7 @@ description: Use when the user asks about the shape of their Zephyr/west workspa
 
 Answers "what is this workspace?" questions about a Zephyr/west tree: workspace root, `ZEPHYR_BASE`, Zephyr version, resolved west manifest, project/module list, and available boards and shields. Every number reported is derived from a command that actually ran or a file that actually exists.
 
-Replaces these `zephyr_ai` MCP tools: `detect_west_workspaces`, `analyze_workspace`, `analyze_west_workspace`, `get_zephyr_version`, `parse_west_manifest`, `list_modules`, `list_boards`.
+Replaces these `zephyr_mcp` MCP tools: `detect_west_workspaces`, `analyze_workspace`, `analyze_west_workspace`, `get_zephyr_version`, `parse_west_manifest`, `list_modules`, `list_boards`.
 
 ## When to use
 

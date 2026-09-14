@@ -7,7 +7,7 @@ import hashlib
 import json
 from pathlib import Path
 
-CACHE_DIR = Path(".zephyr_ai_cache")
+CACHE_DIR = Path(".zephyr_mcp_cache")
 CACHE_DIR.mkdir(exist_ok=True)
 
 

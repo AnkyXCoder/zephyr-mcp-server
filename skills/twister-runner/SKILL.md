@@ -7,7 +7,7 @@ description: Use when the user wants to run Zephyr's Twister test harness -- "ru
 
 Runs Zephyr's Twister harness through `west twister`, captures a machine-readable `twister.json` report, and summarizes it. Counts and failure names come from the parsed report, never from scraping console output.
 
-Replaces the `zephyr_ai` MCP tool: `run_twister`.
+Replaces the `zephyr_mcp` MCP tool: `run_twister`.
 
 ## When to use
 

@@ -5,7 +5,7 @@ Runs clang-format using project .clang-format.
 import subprocess
 import os
 
-from zephyr_ai.core.utils import build_subprocess_env
+from zephyr_mcp.core.utils import build_subprocess_env
 
 
 def run_clang_format(directory: str):

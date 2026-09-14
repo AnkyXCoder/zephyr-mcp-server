@@ -7,7 +7,7 @@ description: Use when the user asks to statically analyse embedded C/C++ sources
 
 Runs a static analyser over a scoped source path and reports its findings grouped by severity, each with a real `file:line`. Uses the analyser's machine-readable output (cppcheck XML / clang-tidy YAML) rather than scraping human-readable console text.
 
-Replaces the `zephyr_ai` MCP tool: `run_cppcheck`.
+Replaces the `zephyr_mcp` MCP tool: `run_cppcheck`.
 
 ## When to use
 

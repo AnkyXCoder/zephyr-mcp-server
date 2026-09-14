@@ -3,17 +3,17 @@ requires = ["setuptools>=68", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "zephyr-ai-platform"
+name = "zephyr-mcp-server"
 version = "1.0.0"
-description = "Production Grade Embedded AI Platform for Zephyr RTOS"
+description = "Production-grade Zephyr RTOS MCP server and agent skill set"
 authors = [{ name = "Your Name" }]
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = ["mcp<2", "pyyaml", "networkx", "flask", "typer", "rich"]
 
 [project.scripts]
-zephyr-ai = "zephyr_ai.cli:cli"
-zephyr-ai-mcp = "zephyr_ai.core.server:main"
+zephyr-mcp = "zephyr_mcp.core.server:main"
+zephyr-mcp-cli = "zephyr_mcp.cli:cli"
 
 [tool.setuptools]
 include-package-data = true
@@ -22,4 +22,4 @@ include-package-data = true
 where = ["."]
 
 [tool.setuptools.package-data]
-zephyr_ai = ["dashboard/templates/*.html"]
+zephyr_mcp = ["dashboard/templates/*.html"]

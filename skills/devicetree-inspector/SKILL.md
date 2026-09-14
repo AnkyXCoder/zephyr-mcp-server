@@ -7,7 +7,7 @@ description: Use when the user asks what the devicetree actually resolved to aft
 
 Reports what the devicetree *actually became* after CMake merged the SoC dtsi, board dts, and overlays -- enabled nodes, `/chosen`, `/aliases`, and specific node lookups -- by reading the build directory's merged `zephyr.dts`. Answers "did my overlay take effect" with evidence rather than inference.
 
-Replaces the `zephyr_ai` MCP tool: `parse_devicetree`.
+Replaces the `zephyr_mcp` MCP tool: `parse_devicetree`.
 
 ## When to use
 

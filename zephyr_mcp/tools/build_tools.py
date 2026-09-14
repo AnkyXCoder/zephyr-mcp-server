@@ -13,8 +13,8 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Deque, Dict, List, Optional
 
-from zephyr_ai.core.runner import make_zephyr_env, run_async
-from zephyr_ai.core.workspace import resolve_workspace
+from zephyr_mcp.core.runner import make_zephyr_env, run_async
+from zephyr_mcp.core.workspace import resolve_workspace
 
 
 def _ok(data: Any) -> dict:

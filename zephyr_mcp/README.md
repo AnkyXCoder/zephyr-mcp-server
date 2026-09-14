@@ -1,4 +1,4 @@
-# Zephyr AI Platform
+# Zephyr MCP Server
 
 Production-grade Embedded AI MCP Platform for Zephyr RTOS.
 
@@ -16,7 +16,7 @@ Features:
 ## Install (5 Minutes)
 
 1. Clone project
-2. cd zephyr-ai-platform
+2. cd zephyr-mcp-server
 3. python -m venv venv
 4. source venv/bin/activate
 5. pip install -r requirements.txt
@@ -31,7 +31,7 @@ Add to config:
 ```json
 {
   "mcpServers": {
-    "zephyr-ai-platform": {
+    "zephyr-mcp": {
       "args": [
         "<path_to_zephyr_mcp>/run_server.py"
       ],
@@ -60,4 +60,4 @@ Restart Claude Desktop.
 ---
 
 This platform is modular and extensible.
-Add new tools under zephyr_ai/ and register them in server.py
+Add new tools under zephyr_mcp/ and register them in server.py

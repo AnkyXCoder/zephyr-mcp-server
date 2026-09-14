@@ -14,7 +14,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import List, Optional, Sequence
 
-from zephyr_ai.core.utils import run_command
+from zephyr_mcp.core.utils import run_command
 
 
 @dataclass(frozen=True)

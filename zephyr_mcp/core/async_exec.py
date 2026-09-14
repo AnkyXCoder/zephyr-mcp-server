@@ -5,7 +5,7 @@ Async command execution engine for high-performance build operations.
 import asyncio
 from typing import Dict, List, Optional
 
-from zephyr_ai.core.utils import build_subprocess_env
+from zephyr_mcp.core.utils import build_subprocess_env
 
 
 async def run_async_command(

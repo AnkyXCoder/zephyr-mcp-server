@@ -7,7 +7,7 @@ description: Use when the user asks about a signed MCUboot image binary -- "is t
 
 Decodes the MCUboot `image_header` at the start of a firmware binary and reports its fields: magic, load address, header size, protected TLV size, image size, flags, and version. An image whose magic does not match is reported as *not an MCUboot image*, never coerced into a plausible-looking answer.
 
-Replaces the `zephyr_ai` MCP tool: `analyze_image`.
+Replaces the `zephyr_mcp` MCP tool: `analyze_image`.
 
 ## When to use
 

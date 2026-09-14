@@ -7,7 +7,7 @@ description: Use when the user wants to capture or interact with a device consol
 
 Captures device console output over a USB-serial port or a SEGGER RTT channel, keeps it running in the background while other work continues, lets the user send commands to the Zephyr shell, and tears the session down cleanly. Session state lives in a background shell id rather than an MCP `session_id`.
 
-Replaces these `zephyr_ai` MCP tools: `serial_log_start`, `serial_log_status`, `serial_log_stop`, `serial_send_command`, `rtt_log_start`, `rtt_log_status`, `rtt_log_stop`.
+Replaces these `zephyr_mcp` MCP tools: `serial_log_start`, `serial_log_status`, `serial_log_stop`, `serial_send_command`, `rtt_log_start`, `rtt_log_status`, `rtt_log_stop`.
 
 ## When to use
 

@@ -1,6 +1,6 @@
 # MCP-to-CLI Guide: replacing an MCP server with Devin CLI skills
 
-How to get everything the `zephyr_ai` MCP server did — and everything a typical vendor-CLI MCP server does — without running an MCP server at all. Written for the case where MCP is disabled by enterprise policy, but equally useful when you simply do not want a long-lived server process between the agent and your toolchain.
+How to get everything the `zephyr_mcp` MCP server did — and everything a typical vendor-CLI MCP server does — without running an MCP server at all. Written for the case where MCP is disabled by enterprise policy, but equally useful when you simply do not want a long-lived server process between the agent and your toolchain.
 
 The same recipe works with other agent CLIs that support a markdown "skill"/"command"/"rule" file convention (Claude Code, Cursor, Windsurf), because nothing here depends on Devin-specific machinery beyond "run a shell command" and "read a file".
 
@@ -8,7 +8,7 @@ The same recipe works with other agent CLIs that support a markdown "skill"/"com
 
 ## 1. Why this works
 
-The `zephyr_ai` server (`~/zephyr_mcp/zephyr_ai/core/server.py`) registers 28 tools on a `FastMCP` instance. Reading every tool module, all 28 reduce to exactly two primitives:
+The `zephyr_mcp` server (`~/zephyr_mcp/zephyr_mcp/core/server.py`) registers 28 tools on a `FastMCP` instance. Reading every tool module, all 28 reduce to exactly two primitives:
 
 **Shell-out wrappers.** The tool builds an argv, runs it as a subprocess, and returns stdout/stderr/returncode:
 
@@ -122,7 +122,7 @@ The rule that makes this trustworthy: **the skill may not state anything it cann
 
 ---
 
-## 3. Tool-by-tool mapping: `zephyr_ai` → Devin CLI skills
+## 3. Tool-by-tool mapping: `zephyr_mcp` → Devin CLI skills
 
 All 28 registered tools, accounted for:
 
@@ -157,7 +157,7 @@ All 28 registered tools, accounted for:
 | 27  | `run_cppcheck`           | `cppcheck --enable=all <path>`       | **`static-analysis-runner`**                          |
 | 28  | `analyze_image`          | MCUboot header unpack                | **`mcuboot-image-inspector`**                         |
 
-(Verify the count yourself: `grep -c 'mcp\.tool()' zephyr_ai/core/server.py` → 28.)
+(Verify the count yourself: `grep -c 'mcp\.tool()' zephyr_mcp/core/server.py` → 28.)
 
 ### The resulting skill set in `skills/`
 
@@ -200,7 +200,7 @@ rtt_log_status(session_id)                        -> { running, uptime_s, recent
 rtt_log_stop(session_id)                          -> { returncode, output }
 ```
 
-Server-side, `zephyr_ai` keeps a module-level dict (`_rtt_sessions`, `_serial_sessions`, `_debug_sessions`) of dataclasses holding the subprocess handle and a `deque` ring buffer drained by a background task.
+Server-side, `zephyr_mcp` keeps a module-level dict (`_rtt_sessions`, `_serial_sessions`, `_debug_sessions`) of dataclasses holding the subprocess handle and a `deque` ring buffer drained by a background task.
 
 **The CLI equivalent.** The agent's shell tooling already provides all three pieces:
 
@@ -371,4 +371,4 @@ To retire an MCP server of your own:
 - [ ] Verify: every skill has all seven sections, its self-validation checks are literally executable, and no skill claims anything it cannot prove (step 5).
 - [ ] Keep the old server around read-only for a while — it is the reference for the flags you encoded.
 
-The original `zephyr_ai` source stays in this repo for exactly that reason: it is the spec these skills were derived from.
+The original `zephyr_mcp` source stays in this repo for exactly that reason: it is the spec these skills were derived from.

@@ -7,7 +7,7 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Any, Dict, Optional
 
-from zephyr_ai.core.workspace import resolve_workspace
+from zephyr_mcp.core.workspace import resolve_workspace
 
 
 def _ok(data: Any) -> dict:

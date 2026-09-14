@@ -1,13 +1,13 @@
 import typer
 import asyncio
-from zephyr_ai.core.async_exec import run_async_command
+from zephyr_mcp.core.async_exec import run_async_command
 
 cli = typer.Typer()
 
 
 @cli.command()
 def set_model(name: str):
-    from zephyr_ai.ai.llm_engine import OllamaEngine
+    from zephyr_mcp.ai.llm_engine import OllamaEngine
     engine = OllamaEngine(model=name)
     print(f"Model set to {name}")
 
@@ -22,15 +22,15 @@ def build(board: str, path: str):
 
 @cli.command()
 def dashboard():
-    from zephyr_ai.dashboard.app import run_dashboard
+    from zephyr_mcp.dashboard.app import run_dashboard
     run_dashboard()
 
 
 @cli.command()
 def enforce_code(path: str):
-    from zephyr_ai.compliance.code_enforcer import enforce_headers
-    from zephyr_ai.compliance.code_formatter import run_clang_format
-    from zephyr_ai.compliance.precommit_runner import run_precommit
+    from zephyr_mcp.compliance.code_enforcer import enforce_headers
+    from zephyr_mcp.compliance.code_formatter import run_clang_format
+    from zephyr_mcp.compliance.precommit_runner import run_precommit
 
     enforce_headers(path)
     run_clang_format(path)

@@ -5,12 +5,12 @@ Registers all tools across modules.
 
 from mcp.server.fastmcp import FastMCP
 
-from zephyr_ai.analysis.cppcheck import run_cppcheck
-from zephyr_ai.firmware.mcuboot import analyze_image
+from zephyr_mcp.analysis.cppcheck import run_cppcheck
+from zephyr_mcp.firmware.mcuboot import analyze_image
 
-from zephyr_ai.tools.boards_tools import list_boards
-from zephyr_ai.tools.build_info_tools import get_build_info
-from zephyr_ai.tools.build_tools import (
+from zephyr_mcp.tools.boards_tools import list_boards
+from zephyr_mcp.tools.build_info_tools import get_build_info
+from zephyr_mcp.tools.build_tools import (
     build,
     build_flash,
     build_flash_debug,
@@ -19,7 +19,7 @@ from zephyr_ai.tools.build_tools import (
     debugserver_stop,
     flash,
 )
-from zephyr_ai.tools.device_console_tools import (
+from zephyr_mcp.tools.device_console_tools import (
     rtt_log_start,
     rtt_log_status,
     rtt_log_stop,
@@ -28,10 +28,10 @@ from zephyr_ai.tools.device_console_tools import (
     serial_log_stop,
     serial_send_command,
 )
-from zephyr_ai.tools.devicetree_tools import parse_devicetree
-from zephyr_ai.tools.kconfig_tools import search_kconfig_symbol
-from zephyr_ai.tools.twister_tools import run_twister
-from zephyr_ai.tools.workspace_tools import (
+from zephyr_mcp.tools.devicetree_tools import parse_devicetree
+from zephyr_mcp.tools.kconfig_tools import search_kconfig_symbol
+from zephyr_mcp.tools.twister_tools import run_twister
+from zephyr_mcp.tools.workspace_tools import (
     analyze_west_workspace,
     analyze_workspace,
     detect_west_workspaces,
@@ -52,7 +52,7 @@ def debug_env():
 
 
 def create_server():
-    mcp = FastMCP("zephyr-ai-platform")
+    mcp = FastMCP("zephyr-mcp")
 
     # Environment Debug
     mcp.tool()(debug_env)
@@ -109,7 +109,7 @@ def create_server():
 
 def main():
     """
-    Console entrypoint for `zephyr-ai-mcp`.
+    Console entrypoint for `zephyr-mcp`.
     """
     server = create_server()
     server.run()

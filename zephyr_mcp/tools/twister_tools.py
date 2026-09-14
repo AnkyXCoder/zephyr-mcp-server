@@ -11,8 +11,8 @@ import tempfile
 from pathlib import Path
 from typing import Any, List, Optional
 
-from zephyr_ai.core.runner import make_zephyr_env, run_async
-from zephyr_ai.core.workspace import resolve_workspace
+from zephyr_mcp.core.runner import make_zephyr_env, run_async
+from zephyr_mcp.core.workspace import resolve_workspace
 
 
 def _ok(data: Any) -> dict:
@@ -46,7 +46,7 @@ async def run_twister(
         if platform:
             argv.extend(["-p", platform])
 
-        with tempfile.TemporaryDirectory(prefix="zephyr_ai_twister_") as td:
+        with tempfile.TemporaryDirectory(prefix="zephyr_mcp_twister_") as td:
             report_dir = Path(td)
             # Twister writes twister.json into the report dir.
             argv.extend(["-o", str(report_dir)])

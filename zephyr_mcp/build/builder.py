@@ -1,6 +1,6 @@
 import asyncio
 
-from zephyr_ai.core.utils import build_subprocess_env
+from zephyr_mcp.core.utils import build_subprocess_env
 
 
 async def build(board: str, path: str, pristine: bool = True):

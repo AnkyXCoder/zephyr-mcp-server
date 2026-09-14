@@ -1,4 +1,4 @@
-# zephyr-ai-platform
+# Zephyr MCP Server
 
 Production-grade Embedded AI platform for Zephyr RTOS: an MCP server plus a
 cross-agent skill set covering the build → flash → test → debug lifecycle.
@@ -17,7 +17,7 @@ cross-agent skill set covering the build → flash → test → debug lifecycle.
 ## Install
 
 ```sh
-git clone <repo> && cd zephyr-ai-platform
+git clone <repo> && cd zephyr-mcp-server
 python -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
 python run_server.py          # starts the MCP server
@@ -34,7 +34,7 @@ python run_server.py          # starts the MCP server
 ```json
 {
   "mcpServers": {
-    "zephyr-ai-platform": {
+    "zephyr-mcp": {
       "command": "<path_to_venv>/.venv/bin/python",
       "args": ["<path_to_repo>/run_server.py"],
       "disabled": false

@@ -2,7 +2,7 @@
 Runs cppcheck and parses XML output.
 """
 
-from zephyr_ai.core.utils import run_command
+from zephyr_mcp.core.utils import run_command
 
 
 def run_cppcheck(path: str):

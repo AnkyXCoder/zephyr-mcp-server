@@ -7,8 +7,8 @@ from __future__ import annotations
 import yaml
 from typing import Any, Dict, List, Optional
 
-from zephyr_ai.core.runner import make_zephyr_env, run_async
-from zephyr_ai.core.workspace import detect_workspaces, resolve_workspace
+from zephyr_mcp.core.runner import make_zephyr_env, run_async
+from zephyr_mcp.core.workspace import detect_workspaces, resolve_workspace
 
 
 def _ok(data: Any) -> dict:

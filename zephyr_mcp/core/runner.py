@@ -16,7 +16,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
-from zephyr_ai.core.utils import build_subprocess_env
+from zephyr_mcp.core.utils import build_subprocess_env
 
 
 @dataclass(frozen=True)

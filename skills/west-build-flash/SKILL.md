@@ -7,7 +7,7 @@ description: Use when the user asks to build, flash, or start a debug server for
 
 Runs the Zephyr build/flash/debug lifecycle through `west` with an explicit, workspace-local build directory, then proves the result by checking the artifacts that must exist on disk. Long-running `west debugserver` runs as a background shell whose id plays the role an MCP `session_id` would.
 
-Replaces these `zephyr_ai` MCP tools: `build`, `flash`, `build_flash`, `build_flash_debug`, `debugserver_start`, `debugserver_status`, `debugserver_stop`, `get_build_info`.
+Replaces these `zephyr_mcp` MCP tools: `build`, `flash`, `build_flash`, `build_flash_debug`, `debugserver_start`, `debugserver_status`, `debugserver_stop`, `get_build_info`.
 
 ## When to use
 

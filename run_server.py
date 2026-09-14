@@ -1,8 +1,8 @@
 """
-Entry point for Zephyr AI Platform MCP Server
+Entry point for Zephyr MCP Server
 """
 
-from zephyr_ai.core.server import create_server
+from zephyr_mcp.core.server import create_server
 
 if __name__ == "__main__":
     server = create_server()
